@@ -1,6 +1,8 @@
 import React from 'react';
 import {Container,Jumbotron, Card, Row, Col, Button} from 'react-bootstrap';
 import {Link} from 'react-router-dom'; 
+import teamImg from '../images/volleyTeam.jpg';
+import playerImg from '../images/soccerPlayer.jpg';
 
 function Home(props) {
     return (
@@ -16,6 +18,7 @@ function Home(props) {
             <Row>
             <Col>
             <Card fluid>
+                <Card.Img variant="top" src={playerImg} />
                 <Card.Body>
                     <Card.Title>Discorver Players</Card.Title>
                     <Card.Text>
@@ -27,7 +30,8 @@ function Home(props) {
             </Card>
             </Col>
             <Col>
-            <Card fluid >
+            <Card fluid>
+                <Card.Img variant="top" src={teamImg}/>
                 <Card.Body>
                     <Card.Title>Discorver Teams</Card.Title>
                     <Card.Text>
