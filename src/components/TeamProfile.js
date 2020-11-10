@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react'
-import { Container, Row, Col, Nav, Card, Button } from 'react-bootstrap'
+import { Container, Row, Col, Nav, Card, Button, Modal, Form } from 'react-bootstrap'
 import { LineChart, Line, BarChart,Bar, PieChart, Pie, Cell, Legend , CartesianGrid, XAxis, YAxis, Tooltip, } from 'recharts';
 import {AuthContext} from './AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -60,11 +60,18 @@ function PlayersContent() {
 }
 
 function StatsContent(props) {
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const AddStatisticBtn = () => {
         if (props.state.name) {
             return (
                 <Row className="m-2 d-flex justify-content-end">
-                    <Button>Add Statistics <FontAwesomeIcon icon={faPlus}/></Button>
+                    <Button onClick={handleShow}>
+                        Add Statistics <FontAwesomeIcon icon={faPlus}/>
+                    </Button>
                 </Row>
             );
         } else {
@@ -72,6 +79,65 @@ function StatsContent(props) {
                 <div></div>
             );
         }
+    }
+
+    const StatisticForm = () => {
+        return (
+            <Modal show={show} onHide={handleClose} animation="false">
+                <Modal.Header closeButton>
+                    <Modal.Title>New statistic entry</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form> 
+                        <Form.Group controlId="year">
+                            <Form.Label>Year:</Form.Label> 
+                            <Form.Control as="select">
+                                <option>2015</option>
+                                <option>2016</option>
+                                <option>2017</option>
+                                <option>2018</option>
+                                <option>2019</option>
+                                <option>2020</option>
+                                <option>2021</option>
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Row>
+                            <Form.Group as={Col} controlId="wins">
+                                <Form.Label>Wins:</Form.Label>
+                                <Form.Control placeholder="0"/>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="losses">
+                                <Form.Label>Losses:</Form.Label>
+                                <Form.Control placeholder="0"/>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="draws">
+                                <Form.Label>Draws:</Form.Label>
+                                <Form.Control placeholder="0"/>
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Group controlId="goals_for">
+                            <Form.Label>Goals for:</Form.Label>
+                            <Form.Control placeholder="0"/>
+                        </Form.Group>
+                        <Form.Group controlId="goals_allowed">
+                            <Form.Label>Goals Allowed:</Form.Label>
+                            <Form.Control placeholder="0"/>
+                        </Form.Group>
+                        <Form.Group controlId="goal_difference">
+                            <Form.Label>Goal Difference:</Form.Label>
+                            <Form.Control placeholder="0"/>
+                        </Form.Group>
+                        <Form.Group controlId="points">
+                            <Form.Label>Points:</Form.Label>
+                            <Form.Control placeholder="0"/>
+                        </Form.Group>
+                        <Button type="submit" variant="primary" onClick={handleClose}>
+                            Submit
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+        );
     }
 
     let data01 = [
@@ -93,6 +159,7 @@ function StatsContent(props) {
 
     return (
         <Container>
+        <StatisticForm/>
         <AddStatisticBtn/>
         <Row className="m-2">
             <Col>
