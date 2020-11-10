@@ -6,15 +6,12 @@ function AuthProvider(props) {
     const [state, setState] = useState({});
 
     useEffect(() => {
-        // if(localStorage.getItem('state')) {
         if(sessionStorage.getItem('state')) {
-            // setState(JSON.parse(localStorage.getItem('state')));
             setState(JSON.parse(sessionStorage.getItem('state')));
         }
     }, []);
 
     useEffect(() => {
-        // localStorage.setItem('state', JSON.stringify(state))
         sessionStorage.setItem('state', JSON.stringify(state))
     }, [state]);
 

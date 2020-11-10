@@ -1,6 +1,9 @@
-import React, {useState} from 'react'
-import { Container, Row, Col, Nav, Card } from 'react-bootstrap'
-import { LineChart, Line, BarChart,Bar, PieChart, Pie, Legend , CartesianGrid, XAxis, YAxis, Tooltip, } from 'recharts';
+import React, {useState, useContext} from 'react'
+import { Container, Row, Col, Nav, Card, Button } from 'react-bootstrap'
+import { LineChart, Line, BarChart,Bar, PieChart, Pie, Cell, Legend , CartesianGrid, XAxis, YAxis, Tooltip, } from 'recharts';
+import {AuthContext} from './AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function ManagerContent() {
     return (
@@ -57,11 +60,25 @@ function PlayersContent() {
 }
 
 function StatsContent(props) {
+    const AddStatisticBtn = () => {
+        if (props.state.name) {
+            return (
+                <Row className="m-2 d-flex justify-content-end">
+                    <Button>Add Statistics <FontAwesomeIcon icon={faPlus}/></Button>
+                </Row>
+            );
+        } else {
+            return(
+                <div></div>
+            );
+        }
+    }
+
     let data01 = [
-  { name: 'Wins', value: 3}, 
-  { name: 'Loses', value: 2 }, 
-  { name: 'Draws', value: 1 }, 
-];
+        { name: 'Wins', value: 3}, 
+        { name: 'Loses', value: 2 }, 
+        { name: 'Draws', value: 1 }, 
+    ];
 
     const avgGoalData = [{name: 'Difference', average: 2}, {name:'Goal Allowed', average: 3}, {name:'Goals for', average: 2}, {name:'Goal', average:2}];
     const yearWinData = [
@@ -72,12 +89,15 @@ function StatsContent(props) {
         {year: 2020, wins: 2, losses: 3, draws: 0},
     ];
 
+    const COLORS = ['#00C49F', '#ff7300', '#0088FE'];
+
     return (
         <Container>
+        <AddStatisticBtn/>
         <Row className="m-2">
             <Col>
                 <h3>Yearly Perferomace:</h3>
-                <LineChart
+                <LineChart className="mx-auto"
                     width={500}
                     height={300}
                     data={yearWinData}
@@ -90,15 +110,21 @@ function StatsContent(props) {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="wins" stroke="#8884d8" activeDot={{ r: 8 }} />
-                    <Line type="monotone" dataKey="draws" stroke="#82ca9d" />
-                    <Line type="monotone" dataKey="losses" />
+                    <Line type="monotone" dataKey="wins" stroke="#8884d8" activeDot={{ r: 8 }} strokeWidth={2}/>
+                    <Line type="monotone" dataKey="draws" stroke="#82ca9d" strokeWidth={2}/>
+                    <Line type="monotone" dataKey="losses" strokeWidth={2}/>
                 </LineChart>
             </Col>
             <Col>
                 <h3>Overall Perferomace</h3>
-                <PieChart width={300} height={300}>
-                    <Pie dataKey="value" data={data01} cx={150} cy={150} outerRadius={100} fill="#82ca9d" label />
+                <PieChart width={300} height={300} className="mx-auto">
+                    <Pie dataKey="value" data={data01} cx={150} cy={150} outerRadius={100} fill="#82ca9d" label >
+
+                    {
+                        data01.map((entry, index) => (<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />))
+                    }
+                    </Pie>
+
                     <Tooltip />
                     <Legend/>
                 </PieChart>
@@ -125,11 +151,6 @@ function StatsContent(props) {
             </Col>
             <Col>
                 <h3>Team Perferomace</h3>
-                <PieChart width={300} height={300}>
-                    <Pie dataKey="value" data={data01} cx={150} cy={150} outerRadius={100} fill="#82ca9d" label />
-                    <Tooltip />
-                    <Legend/>
-                </PieChart>
             </Col>
         </Row>
         </Container>
@@ -137,20 +158,19 @@ function StatsContent(props) {
 }
 
 function TeamProfile() {
-    const tabs ={
+    const tabs = {
         MANAGER: 'manager',
         PLAYERS: 'players',
         STATISTICS: 'statistics'
     };
 
     let [tab, setActiveTab] = useState(tabs.STATISTICS);
-
-    const data = [{name: 'Points', avg: 3},{name: '', avg: 5}, {name: 'Page C', avg: 6}, {name: 'Page D', uv: 2}, {name: 'Page E', uv: 3}]; 
+    const [state, setState] = useContext(AuthContext);
 
     let content;
     switch (tab) {
         case tabs.STATISTICS:
-            content = <StatsContent data={data}/>
+            content = <StatsContent state={state}/>
             break;
         case tabs.MANAGER:
             content = <ManagerContent/>
