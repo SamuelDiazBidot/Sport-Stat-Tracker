@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Teams from './components/Teams';
 import Players from './components/Players';
 import TeamProfile from './components/TeamProfile';
+import PlayerProfile from './components/PlayerProfile';
 import {AuthProvider} from './components/AuthContext';
 
 function App() {
@@ -27,6 +28,9 @@ function App() {
             <Route path="/team/:id">
               <TeamProfile/>
             </Route>
+            <Route path="/player/:id">
+              <PlayerProfile/>
+            </Route>
             <Route path="/login">
               <Home title="Login"/>
             </Route>
@@ -34,7 +38,7 @@ function App() {
               Register
             </Route>
           </Switch>
-          <Footer/>
+          {/* <Footer/> */}
         </AuthProvider>
       </div>
     </Router>

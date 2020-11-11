@@ -1,15 +1,32 @@
-import React from 'react'
-import Searchbar from './Searchbar'
-import { Container, Card } from 'react-bootstrap'
+import React from 'react';
+import Searchbar from './Searchbar';
+import { Container, Card, Row, Col } from 'react-bootstrap';
+import {Link} from 'react-router-dom';
+
+function PlayerPreview(props) {
+    const {playerID, playerName, position} = props;
+
+    return (
+        <Card as={Link} to={"player/" + playerID}  className="my-3" style={{textDecoration: 'none'}}>
+             <Card.Header>
+                <h5>{playerName}</h5>
+                <hr/>
+                <Row>
+                    <Col>
+                        Position: {position}
+                    </Col>
+                </Row>
+             </Card.Header>
+         </Card>
+    )
+}
 
 function Players() {
     return (
         <div>
             <Container>
                 <Searchbar title="Players" placeholder="Search Players"/>
-                <Card className="m-2">
-                    <Card.Header>Jerry Bassat</Card.Header>
-                </Card>
+                <PlayerPreview playerID={2} playerName={"Jerry Bassat"} position={"Goalie"} />
             </Container>
         </div>
     )
